@@ -1,0 +1,9 @@
+----
+-  name: apply common configaration to all nodes
+   become: yes
+   hosts: all
+   sudo: yes
+   user: root
+   
+   roles:
+    -  common
