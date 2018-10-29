@@ -1,2 +1,2 @@
 # navya
-This is refernce for future purpose
+This is refernce for future reference
