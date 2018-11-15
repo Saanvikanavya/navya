@@ -1,0 +1,48 @@
+```printf "172.17.0.2\tweb.nifi01.pl.dev.xpms.io\n" >> /etc/hosts
+wget https://archive.apache.org/dist/nifi/1.4.0/nifi-toolkit-1.4.0-bin.tar.gz
+tar -xvf nifi-toolkit-1.4.0-bin.tar.gz
+cd nifi-toolkit-1.4.0/bin
+./tls-toolkit.sh standalone -n "*.xpms.io"
+mv \*.xpms.io/ star.xpms.io/
+mv nifi-* star.xpms.io/
+mv star.xpms.io/* /opt/nifi/nifi-1.4.0/conf/
+cd /opt/nifi/nifi-1.4.0/conf/
+apt update && apt install -y nano procps
+nano nifi.properties
+
+##update following properties
+nifi.web.https.host=web.nifi01.pl.dev.xpms.io
+nifi.security.user.oidc.discovery.url=http://10.32.102.154:8082/auth/realms/xpms/.well-known/openid-configuration
+nifi.security.user.oidc.client.id=test-nifi-openid
+nifi.security.user.oidc.client.secret=42fa4fed-5a14-4abc-8b28-e6db478d87fe```
+
+
+authorizers.xml
+
+```<userGroupProvider>
+  <identifier>file-user-group-provider</identifier>
+  <class>org.apache.nifi.authorization.FileUserGroupProvider</class>
+  <property name="Users File">./conf/users.xml</property>
+  <property name="Legacy Authorized Users File"></property>
+
+  <property name="Initial User Identity 1">CN=test1</property>
+</userGroupProvider>
+
+<accessPolicyProvider>
+  <identifier>file-access-policy-provider</identifier>
+  <class>org.apache.nifi.authorization.FileAccessPolicyProvider</class>
+  <property name="User Group Provider">file-user-group-provider</property>
+  <property name="Authorizations File">./conf/authorizations.xml</property>
+  <property name="Initial Admin Identity">CN=test1</property>
+  <property name="Legacy Authorized Users File"></property>
+
+  <property name="Node Identity 1"></property>
+</accessPolicyProvider>```
+
+
+
+Ashutosh [12:14 PM]
+http://quay.io/xpms/nifi:xpms-nifi-1.4.0
+quay.io
+Quay
+Quay is the best place to build, store, and distribute your containers. Public repositories are always free.
